@@ -1,0 +1,143 @@
+# Utworzony przez https://www.toptal.com/developers/gitignore/api/java,intellij
+# Edytuj na https://www.toptal.com/developers/gitignore?templates=java,intellij
+
+### Intellij ###
+# Obejmuje IDE JetBrains: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm, CLion, Android Studio, WebStorm i Rider
+# Odniesienie: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
+
+# Rzeczy specyficzne dla użytkownika
+.idea/**/workspace.xml
+.idea/**/zadania.xml
+.idea/**/usage.statistics.xml
+.idea/**/słowniki
+.idea/**/półka
+
+# AWS Specyficzne dla użytkownika
+.idea/**/aws.xml
+
+# Wygenerowane pliki
+.idea/**/contentModel.xml
+
+# Pliki wrażliwe lub o dużej rotacji
+.idea/**/dataSources/
+.idea/**/dataSources.ids
+.idea/**/dataSources.local.xml
+.idea/**/sqlDataSources.xml
+.idea/**/dynamic.xml
+.idea/**/uiDesigner.xml
+.idea/**/dbnavigator.xml
+
+# Stopień
+.idea/**/gradle.xml
+.idea/**/biblioteki
+
+# Gradle i Maven z automatycznym importem
+# Podczas korzystania z Gradle lub Maven z automatycznym importem należy wykluczyć pliki modułów,
+# ponieważ zostaną odtworzone i mogą spowodować rezygnację. Odkomentuj, jeśli używasz
+# automatyczny import.
+# .idea/artefakty
+# .idea/kompilator.xml
+# .idea/jarRepositories.xml
+# .idea/modules.xml
+# .pomysł/*.iml
+# .pomysł/moduły
+# *.iml
+# *.ipr
+
+# CMake
+cmake-build-*/
+
+# Wtyczka Mongo Explorer
+.idea/**/mongoSettings.xml
+
+# Format projektu oparty na plikach
+*.iws
+
+#IntelliJ
+na zewnątrz/
+
+# wtyczka mpeltonen/sbt-idea
+.idea_modules/
+
+# Wtyczka JIRA
+atlassian-ide-plugin.xml
+
+# Wtyczka Cursive Clojure
+.idea/replstate.xml
+
+# Wtyczka SonarLint
+.idea/sonarlint/
+
+# Wtyczka Crashlytics (dla Android Studio i IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.właściwości
+crashlytics-build.properties
+tkanina.właściwości
+
+# Klient odpoczynku oparty na edytorze
+.idea/httpRequests
+
+# Serializowany plik pamięci podręcznej Android studio 3.1+
+.idea/caches/build_file_checksums.ser
+
+### Łatka Intellij ###
+# Powód komentarza: https://github.com/joeblau/gitignore.io/issues/186#issuecomment-215987721
+
+# *.iml
+# moduły.xml
+# .idea/misc.xml
+# *.ipr
+
+# Wtyczka Sonarlint
+# https://plugins.jetbrains.com/plugin/7973-sonarlint
+.idea/**/sonarlint/
+
+# Wtyczka SonarQube
+# https://plugins.jetbrains.com/plugin/7238-sonarqube-community-plugin
+.idea/**/sonarIssues.xml
+
+# Wtyczka Markdown Navigator
+# https://plugins.jetbrains.com/plugin/7896-markdown-navigator-enhanced
+.idea/**/markdown-navigator.xml
+.idea/**/markdown-navigator-enh.xml
+.idea/**/markdown-navigator/
+
+# Błąd tworzenia pliku pamięci podręcznej
+# Zobacz https://youtrack.jetbrains.com/issue/JBR-2257
+.idea/$CACHE_FILE$
+
+# Wtyczka CodeStream
+# https://plugins.jetbrains.com/plugin/12206-codestream
+.idea/codestream.xml
+
+# Azure Toolkit dla wtyczki IntelliJ
+# https://plugins.jetbrains.com/plugin/8053-azure-toolkit-for-intellij
+.idea/**/azureSettings.xml
+
+### Java ###
+# Skompilowany plik klasy
+*.klasa
+
+# Plik dziennika
+*.dziennik
+
+# Pliki BlueJ
+*.ctxt
+
+# Narzędzia mobilne dla języka Java (J2ME)
+.mtj.tmp/
+
+# Pliki pakietów #
+*.słoik
+*.wojna
+*.nar
+*.ucho
+*.zamek błyskawiczny
+*.tar.gz
+*.rar
+
+# dzienniki awarii maszyny wirtualnej, zobacz http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+replay_pid*
+
+# Koniec https://www.toptal.com/developers/gitignore/api/java,intellij
