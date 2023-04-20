@@ -10,4 +10,5 @@ import pl.store.infrastructure.database.DatabaseConfiguration;
 @ComponentScan(basePackages = "pl.store")
 public class ApplicationConfiguration {
 
+
 }
