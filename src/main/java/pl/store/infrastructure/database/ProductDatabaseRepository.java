@@ -2,6 +2,7 @@ package pl.store.infrastructure.database;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.stereotype.Repository;
@@ -16,6 +17,7 @@ import java.util.Map;
 @AllArgsConstructor
 public class ProductDatabaseRepository implements ProductRepository {
 
+    private final static String DELETE_ALL = "DELETE FROM PRODUCT WHERE 1=1";
     private final SimpleDriverDataSource simpleDriverDataSource;
 
     private final DatabaseMapper databaseMapper;
@@ -29,5 +31,9 @@ public class ProductDatabaseRepository implements ProductRepository {
 
         final Number productId = simpleJdbcInsert.executeAndReturnKey(params);
         return product.withId((long) productId.intValue());
+    }
+    @Override
+    public void deleteAll() {
+        new JdbcTemplate(simpleDriverDataSource).update(DELETE_ALL);
     }
 }
