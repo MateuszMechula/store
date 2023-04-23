@@ -9,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 public class Producer {
     private Long id;
-    private String producerName;
+    private String producer_name;
     private String address;
 }

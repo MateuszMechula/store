@@ -12,11 +12,11 @@ import java.util.stream.IntStream;
 
 @Service
 public class RandomDataPreparationService {
-    Customer createCustomer() {
+    Customer  createCustomer() {
         String name = randomString(65,90,1) + randomString(97,122,10)
                 + randomString(48,57,2);
         return Customer.builder()
-                .username(name + "user")
+                .user_name(name + "user")
                 .email(name + "@gmail.com")
                 .name(name)
                 .surname("surname")
@@ -37,7 +37,7 @@ public class RandomDataPreparationService {
 
     Producer createProducer() {
         return Producer.builder()
-                .producerName(randomString(65,90,1) + randomString(97,122,10))
+                .producer_name(randomString(65,90,1) + randomString(97,122,10))
                 .address("some Address")
                 .build();
     }
