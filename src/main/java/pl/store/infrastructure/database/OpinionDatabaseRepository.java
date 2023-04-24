@@ -23,7 +23,7 @@ public class OpinionDatabaseRepository implements OpinionRepository {
     private static final String DELETE_ALL_WHERE_CUSTOMER_EMAIL =
             "DELETE FROM OPINION WHERE CUSTOMER_ID IN (SELECT ID FROM CUSTOMER WHERE EMAIL = :email)";
     private static final String SELECT_ALL_WHERE_CUSTOMER_EMAIL = """
-            SELECT * FROM PURCHASE AS OPN
+            SELECT * FROM OPINION AS OPN
                 INNER JOIN CUSTOMER AS CUS ON CUS.ID = OPN.CUSTOMER_ID
                 WHERE CUS.EMAIL = :email
                 ORDER BY DATE_TIME

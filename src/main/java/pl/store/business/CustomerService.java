@@ -1,13 +1,11 @@
 package pl.store.business;
 
 import lombok.AllArgsConstructor;
-import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.store.domain.Customer;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 
 @Service
 @AllArgsConstructor
@@ -45,7 +43,8 @@ public class CustomerService {
         purchaseService.removeALl(email);
 
         if (isOlderThan40(existingCustomer)) {
-            throw new RuntimeException("Could not remove customer because he/she is older than 40");
+            throw new RuntimeException("Could not remove customer because he/she is older than 40, email: [%s]"
+                    .formatted(existingCustomer.getEmail()));
         }
 
         customerRepository.remove(email);

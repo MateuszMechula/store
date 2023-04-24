@@ -15,6 +15,7 @@ import pl.store.infrastructure.configuration.DatabaseConfiguration;
 import java.util.Map;
 import java.util.Optional;
 
+
 @Slf4j
 @Repository
 @AllArgsConstructor
