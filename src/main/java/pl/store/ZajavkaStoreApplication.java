@@ -11,5 +11,7 @@ public class ZajavkaStoreApplication {
 
         ReloadDataService random = applicationContext.getBean(ReloadDataService.class);
          random.loadRandomData();
+
+
     }
 }
