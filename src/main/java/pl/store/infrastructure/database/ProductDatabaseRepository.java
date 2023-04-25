@@ -10,6 +10,7 @@ import pl.store.business.ProductRepository;
 import pl.store.domain.Product;
 import pl.store.infrastructure.configuration.DatabaseConfiguration;
 
+import java.util.List;
 import java.util.Map;
 
 @Slf4j
@@ -18,6 +19,7 @@ import java.util.Map;
 public class ProductDatabaseRepository implements ProductRepository {
 
     private final static String DELETE_ALL = "DELETE FROM PRODUCT WHERE 1=1";
+    private static final String SELECT_ALL_PRODUCT = "SELECT * FROM PRODUCT";
     private final SimpleDriverDataSource simpleDriverDataSource;
 
     private final DatabaseMapper databaseMapper;
@@ -35,5 +37,11 @@ public class ProductDatabaseRepository implements ProductRepository {
     @Override
     public void deleteAll() {
         new JdbcTemplate(simpleDriverDataSource).update(DELETE_ALL);
+    }
+
+    @Override
+    public List<Product> findAll() {
+        final JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
+        return jdbcTemplate.query(SELECT_ALL_PRODUCT, DatabaseMapper::mapProduct);
     }
 }

@@ -12,6 +12,7 @@ import pl.store.business.CustomerRepository;
 import pl.store.domain.Customer;
 import pl.store.infrastructure.configuration.DatabaseConfiguration;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,6 +25,8 @@ public class CustomerDatabaseRepository implements CustomerRepository {
     private final static String DELETE_ALL = "DELETE FROM CUSTOMER WHERE 1=1";
     private final static String SELECT_ONE_WHERE_EMAIL = "SELECT * FROM CUSTOMER WHERE EMAIL = :email";
     private static final String DELETE_WHERE_CUSTOMER_EMAIL = "DELETE FROM CUSTOMER WHERE EMAIL = :email";
+    private static final String SELECT_ALL_CUSTOMERS = "SELECT * FROM CUSTOMER";
+
     private final SimpleDriverDataSource simpleDriverDataSource;
     private final DatabaseMapper databaseMapper;
     @Override
@@ -52,6 +55,12 @@ public class CustomerDatabaseRepository implements CustomerRepository {
             log.warn("Trying to find non-existing customer: [{}]", email);
             return Optional.empty();
         }
+    }
+
+    @Override
+    public List<Customer> findAll() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
+        return jdbcTemplate.query(SELECT_ALL_CUSTOMERS, databaseMapper::mapCustomer);
     }
 
     @Override

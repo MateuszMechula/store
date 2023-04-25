@@ -35,6 +35,7 @@ public class PurchaseDatabaseRepository implements PurchaseRepository {
                 WHERE CUS.EMAIL = :email
                 AND PROD.PRODUCT_CODE = :product_code
             """;
+    private static final String SELECT_ALL_PURCHASE = "SELECT * FROM PURCHASE";
 
     private final SimpleDriverDataSource simpleDriverDataSource;
     private final DatabaseMapper databaseMapper;
@@ -77,5 +78,11 @@ public class PurchaseDatabaseRepository implements PurchaseRepository {
                 ),
                 DatabaseMapper::mapPurchase
         );
+    }
+
+    @Override
+    public List<Purchase> findAll() {
+        final JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
+        return jdbcTemplate.query(SELECT_ALL_PURCHASE, DatabaseMapper::mapPurchase);
     }
 }

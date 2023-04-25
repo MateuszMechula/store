@@ -39,6 +39,11 @@ public class OpinionService {
     }
 
     @Transactional
+    public List<Opinion> findAll() {
+        return opinionRepository.findAll();
+    }
+
+    @Transactional
     public List<Opinion> findAll(String email) {
         return opinionRepository.findAll(email);
     }

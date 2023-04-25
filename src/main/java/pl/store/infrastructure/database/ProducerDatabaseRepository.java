@@ -11,12 +11,15 @@ import pl.store.business.ProducerRepository;
 import pl.store.domain.Producer;
 import pl.store.infrastructure.configuration.DatabaseConfiguration;
 
+import java.util.List;
+
 @Slf4j
 @Repository
 @AllArgsConstructor
 public class ProducerDatabaseRepository implements ProducerRepository {
 
     private final static String DELETE_ALL = "DELETE FROM PRODUCER WHERE 1=1";
+    private static final String SELECT_ALL_PRODUCER = "SELECT * FROM PRODUCER";
     private final SimpleDriverDataSource simpleDriverDataSource;
     @Override
     public Producer create(Producer producer) {
@@ -31,5 +34,11 @@ public class ProducerDatabaseRepository implements ProducerRepository {
     @Override
     public void deleteAll() {
         new JdbcTemplate(simpleDriverDataSource).update(DELETE_ALL);
+    }
+
+    @Override
+    public List<Producer> findAll() {
+        final JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
+        return jdbcTemplate.query(SELECT_ALL_PRODUCER, DatabaseMapper::mapProducer);
     }
 }

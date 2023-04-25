@@ -1,11 +1,9 @@
 package pl.store.infrastructure.database;
 
 import org.springframework.stereotype.Component;
-import pl.store.domain.Customer;
-import pl.store.domain.Opinion;
-import pl.store.domain.Product;
-import pl.store.domain.Purchase;
+import pl.store.domain.*;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -84,4 +82,24 @@ public class DatabaseMapper {
                         .withOffsetSameInstant(ZoneOffset.UTC))
                 .build();
     }
+
+    public static Product mapProduct(ResultSet resultSet, int rowNum) throws SQLException {
+        return Product.builder()
+                .id(resultSet.getLong("id"))
+                .productCode(resultSet.getString("product_code"))
+                .productName(resultSet.getString("product_name"))
+                .productPrice(new BigDecimal(resultSet.getString("product_price")))
+                .adultsOnly(resultSet.getBoolean("adults_only"))
+                .description(resultSet.getString("description"))
+                .producer(Producer.builder().id(resultSet.getLong("producer_id")).build())
+                .build();
+    }
+    public static Producer mapProducer(ResultSet resultSet, int rowNum) throws SQLException {
+        return Producer.builder()
+                .id(resultSet.getLong("id"))
+                .producer_name(resultSet.getString("producer_name"))
+                .address(resultSet.getString("address"))
+                .build();
+    }
+
 }

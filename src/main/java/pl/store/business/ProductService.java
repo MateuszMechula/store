@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import pl.store.domain.Product;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class ProductService {
@@ -22,5 +24,10 @@ public class ProductService {
     public void removeAll() {
         purchaseService.removeALl();
         productRepository.deleteAll();
+    }
+
+    @Transactional
+    public List<Product> findAll() {
+        return productRepository.findAll();
     }
 }

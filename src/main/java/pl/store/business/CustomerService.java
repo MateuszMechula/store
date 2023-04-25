@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 import pl.store.domain.Customer;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Service
 @AllArgsConstructor
@@ -32,6 +33,11 @@ public class CustomerService {
     public Customer find(String email) {
         return customerRepository.find(email)
                 .orElseThrow(() -> new RuntimeException("Customer with email: [%s] is missing".formatted(email)));
+    }
+
+    @Transactional
+    public List<Customer> findAll() {
+        return customerRepository.findAll();
     }
 
     @Transactional

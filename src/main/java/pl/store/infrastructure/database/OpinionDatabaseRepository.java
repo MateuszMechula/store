@@ -28,8 +28,8 @@ public class OpinionDatabaseRepository implements OpinionRepository {
                 WHERE CUS.EMAIL = :email
                 ORDER BY DATE_TIME
             """;
+    private static final String SELECT_ALL_OPINIONS = "SELECT * FROM OPINION";
     private final SimpleDriverDataSource simpleDriverDataSource;
-
     private final DatabaseMapper databaseMapper;
     @Override
     public Opinion create(Opinion opinion) {
@@ -53,8 +53,15 @@ public class OpinionDatabaseRepository implements OpinionRepository {
     }
 
     @Override
+    public List<Opinion> findAll() {
+        final JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
+        return jdbcTemplate.query(SELECT_ALL_OPINIONS, DatabaseMapper::mapOpinion);
+    }
+
+    @Override
     public List<Opinion> findAll(String email) {
         NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
         return jdbcTemplate.query(SELECT_ALL_WHERE_CUSTOMER_EMAIL,Map.of("email", email), DatabaseMapper::mapOpinion);
     }
+
 }
