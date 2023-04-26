@@ -44,10 +44,6 @@ public class OpinionService {
     }
 
     @Transactional
-    public void removeWhereStars() {
-        opinionRepository.deleteWhereStars();
-    }
-    @Transactional
     public List<Opinion> findAll() {
         return opinionRepository.findAll();
     }
@@ -55,5 +51,19 @@ public class OpinionService {
     @Transactional
     public List<Opinion> findAll(String email) {
         return opinionRepository.findAll(email);
+    }
+
+    @Transactional
+    public List<Opinion> findUnwantedOpinions() {
+        return opinionRepository.findUnwantedOpinions();
+    }
+
+    @Transactional
+    public void removeUnwantedOpinions() {
+        opinionRepository.removeUnwantedOpinions();
+    }
+
+    public boolean customerGivesUnwantedOpinions(String email) {
+        return opinionRepository.consumerGivesUnwantedOpinions(email);
     }
 }

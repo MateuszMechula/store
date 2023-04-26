@@ -23,9 +23,9 @@ import java.util.Optional;
 public class CustomerDatabaseRepository implements CustomerRepository {
 
     private final static String DELETE_ALL = "DELETE FROM CUSTOMER WHERE 1=1";
-    private final static String SELECT_ONE_WHERE_EMAIL = "SELECT * FROM CUSTOMER WHERE EMAIL = :email";
     private static final String DELETE_WHERE_CUSTOMER_EMAIL = "DELETE FROM CUSTOMER WHERE EMAIL = :email";
     private static final String SELECT_ALL_CUSTOMERS = "SELECT * FROM CUSTOMER";
+    private final static String SELECT_ONE_WHERE_EMAIL = "SELECT * FROM CUSTOMER WHERE EMAIL = :email";
 
     private final SimpleDriverDataSource simpleDriverDataSource;
     private final DatabaseMapper databaseMapper;

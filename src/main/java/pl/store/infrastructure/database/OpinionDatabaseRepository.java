@@ -20,7 +20,13 @@ import java.util.Map;
 public class OpinionDatabaseRepository implements OpinionRepository {
 
     private final static String DELETE_ALL = "DELETE FROM OPINION WHERE 1=1";
-    private final static String DELETE_ALL_WHERE_STARS = "DELETE FROM OPINION WHERE STARS < 4";
+    private final static String SELECT_UNWANTED_OPINIONS = "SELECT * FROM OPINION WHERE STARS < 4";
+    private static final String DELETE_UNWANTED_OPINIONS = "DELETE FROM OPINION WHERE STARS < 4";
+    private static final String SELECT_UNWANTED_OPINIONS_FOR_EMAIL = """
+            SELECT * FROM OPINION
+            WHERE STARS < 4
+            AND CUSTOMER_ID IN (SELECT ID FROM CUSTOMER WHERE EMAIL = :email)
+            """;
     private static final String DELETE_ALL_WHERE_CUSTOMER_EMAIL =
             "DELETE FROM OPINION WHERE CUSTOMER_ID IN (SELECT ID FROM CUSTOMER WHERE EMAIL = :email)";
     private static final String SELECT_ALL_WHERE_CUSTOMER_EMAIL = """
@@ -48,12 +54,6 @@ public class OpinionDatabaseRepository implements OpinionRepository {
     }
 
     @Override
-    public void deleteWhereStars() {
-        final JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
-        jdbcTemplate.update(DELETE_ALL_WHERE_STARS);
-    }
-
-    @Override
     public void remove(String email) {
         NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
         jdbcTemplate.update(DELETE_ALL_WHERE_CUSTOMER_EMAIL, Map.of("email", email));
@@ -63,7 +63,7 @@ public class OpinionDatabaseRepository implements OpinionRepository {
 
     @Override
     public List<Opinion> findAll() {
-        final JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
         return jdbcTemplate.query(SELECT_ALL_OPINIONS, DatabaseMapper::mapOpinion);
     }
 
@@ -71,6 +71,27 @@ public class OpinionDatabaseRepository implements OpinionRepository {
     public List<Opinion> findAll(String email) {
         NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
         return jdbcTemplate.query(SELECT_ALL_WHERE_CUSTOMER_EMAIL,Map.of("email", email), DatabaseMapper::mapOpinion);
+    }
+
+    @Override
+    public List<Opinion> findUnwantedOpinions() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
+        return jdbcTemplate.query(SELECT_UNWANTED_OPINIONS, DatabaseMapper::mapOpinion);
+
+    }
+
+    @Override
+    public void removeUnwantedOpinions() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
+        jdbcTemplate.update(DELETE_UNWANTED_OPINIONS);
+    }
+
+    @Override
+    public boolean consumerGivesUnwantedOpinions(String email) {
+        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
+        return jdbcTemplate
+                .query(SELECT_UNWANTED_OPINIONS_FOR_EMAIL,Map.of("email", email), DatabaseMapper::mapOpinion)
+                .size() > 0;
     }
 
 }

@@ -23,13 +23,6 @@ public class CustomerService {
     }
 
     @Transactional
-    public void removeAll() {
-        opinionService.removeAll();
-        purchaseService.removeALl();
-        customerRepository.deleteAll();
-    }
-
-    @Transactional
     public Customer find(String email) {
         return customerRepository.find(email)
                 .orElseThrow(() -> new RuntimeException("Customer with email: [%s] is missing".formatted(email)));
@@ -38,6 +31,13 @@ public class CustomerService {
     @Transactional
     public List<Customer> findAll() {
         return customerRepository.findAll();
+    }
+
+    @Transactional
+    public void removeAll() {
+        opinionService.removeAll();
+        purchaseService.removeALl();
+        customerRepository.deleteAll();
     }
 
     @Transactional
@@ -54,6 +54,15 @@ public class CustomerService {
         }
 
         customerRepository.remove(email);
+    }
+    @Transactional
+    public void removeUnwantedCustomers() {
+        List<Customer> customers = customerRepository.findAll().stream()
+                .filter(customer -> !isOlderThan40(customer))
+                .filter(customer -> opinionService.customerGivesUnwantedOpinions(customer.getEmail()))
+                .toList();
+
+         customers.forEach(customer -> remove(customer.getEmail()));
     }
 
     private boolean isOlderThan40(Customer existingCustomer) {

@@ -2,13 +2,13 @@ package pl.store.integration;
 
 
 import lombok.AllArgsConstructor;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
 import pl.store.business.*;
-import pl.store.domain.SomeFixtures;
 import pl.store.domain.*;
 import pl.store.infrastructure.configuration.ApplicationConfiguration;
 
@@ -99,7 +99,7 @@ class CustomerServiceTest {
                         purchase1
                                 .withCustomer(Customer.builder().id(customer.getId()).build())
                                 .withProduct(Product.builder().id(product1.getId()).build())
-                                .withDateTime(purchase1.getDateTime().withOffsetSameInstant(ZoneOffset.UTC)),
+                                        .withDateTime(purchase1.getDateTime().withOffsetSameInstant(ZoneOffset.UTC)),
                         purchase2
                                 .withCustomer(Customer.builder().id(customer.getId()).build())
                                 .withProduct(Product.builder().id(product2.getId()).build())
@@ -116,5 +116,18 @@ class CustomerServiceTest {
                 ),
                 opinionService.findAll(customer.getEmail())
         );
+    }
+
+    @Test
+    @DisplayName("Polecenie 8")
+    void thatCustomersGivingUnwantedOpinionsAreRemoved() {
+        // given
+        reloadDataService.reloadData();
+        Assertions.assertEquals(100, customerService.findAll().size());
+        // when
+        customerService.removeUnwantedCustomers();
+
+        // then
+        Assertions.assertEquals(64, customerService.findAll().size());
     }
 }
