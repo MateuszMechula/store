@@ -83,6 +83,7 @@ public class DatabaseMapper {
                 .build();
     }
 
+    @SuppressWarnings("unused")
     public static Product mapProduct(ResultSet resultSet, int rowNum) throws SQLException {
         return Product.builder()
                 .id(resultSet.getLong("id"))
@@ -94,6 +95,7 @@ public class DatabaseMapper {
                 .producer(Producer.builder().id(resultSet.getLong("producer_id")).build())
                 .build();
     }
+    @SuppressWarnings("unused")
     public static Producer mapProducer(ResultSet resultSet, int rowNum) throws SQLException {
         return Producer.builder()
                 .id(resultSet.getLong("id"))

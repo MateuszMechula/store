@@ -39,6 +39,15 @@ public class OpinionService {
     }
 
     @Transactional
+    public void removeAll(String email) {
+        opinionRepository.remove(email);
+    }
+
+    @Transactional
+    public void removeWhereStars() {
+        opinionRepository.deleteWhereStars();
+    }
+    @Transactional
     public List<Opinion> findAll() {
         return opinionRepository.findAll();
     }
@@ -46,9 +55,5 @@ public class OpinionService {
     @Transactional
     public List<Opinion> findAll(String email) {
         return opinionRepository.findAll(email);
-    }
-    @Transactional
-    public void removeAll(String email) {
-        opinionRepository.remove(email);
     }
 }

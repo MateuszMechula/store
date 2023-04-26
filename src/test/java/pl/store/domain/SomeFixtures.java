@@ -1,6 +1,4 @@
-package pl.store.business.integration.domain;
-
-import pl.store.domain.*;
+package pl.store.domain;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

@@ -20,6 +20,7 @@ import java.util.Map;
 public class OpinionDatabaseRepository implements OpinionRepository {
 
     private final static String DELETE_ALL = "DELETE FROM OPINION WHERE 1=1";
+    private final static String DELETE_ALL_WHERE_STARS = "DELETE FROM OPINION WHERE STARS < 4";
     private static final String DELETE_ALL_WHERE_CUSTOMER_EMAIL =
             "DELETE FROM OPINION WHERE CUSTOMER_ID IN (SELECT ID FROM CUSTOMER WHERE EMAIL = :email)";
     private static final String SELECT_ALL_WHERE_CUSTOMER_EMAIL = """
@@ -47,10 +48,18 @@ public class OpinionDatabaseRepository implements OpinionRepository {
     }
 
     @Override
+    public void deleteWhereStars() {
+        final JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
+        jdbcTemplate.update(DELETE_ALL_WHERE_STARS);
+    }
+
+    @Override
     public void remove(String email) {
         NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
         jdbcTemplate.update(DELETE_ALL_WHERE_CUSTOMER_EMAIL, Map.of("email", email));
     }
+
+
 
     @Override
     public List<Opinion> findAll() {

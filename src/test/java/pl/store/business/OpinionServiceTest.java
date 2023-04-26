@@ -7,8 +7,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import pl.store.business.integration.domain.SomeFixtures;
 import pl.store.domain.Opinion;
+import pl.store.domain.SomeFixtures;
 
 import java.util.List;
 

@@ -1,10 +1,11 @@
-package pl.store.business;
+package pl.store.integration;
 
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import pl.store.business.*;
 import pl.store.domain.*;
 import pl.store.infrastructure.configuration.ApplicationConfiguration;
 

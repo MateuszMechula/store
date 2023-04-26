@@ -7,6 +7,7 @@ import java.util.List;
 public interface OpinionRepository {
     Opinion create(Opinion opinion);
     void deleteAll();
+    void deleteWhereStars();
 
     void remove(String email);
 
