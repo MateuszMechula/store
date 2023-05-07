@@ -31,7 +31,6 @@ public class DatabaseConfiguration {
         dataSource.setPassword("postgres");
         return dataSource;
     }
-
     @Bean
     public PlatformTransactionManager txManager() {
         return new DataSourceTransactionManager(simpleDriverDataSource());

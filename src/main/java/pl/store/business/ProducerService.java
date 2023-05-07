@@ -18,14 +18,13 @@ public class ProducerService {
     public Producer create(Producer producer) {
         return producerRepository.create(producer);
     }
-
+    @Transactional
+    public List<Producer> findAll() {
+        return producerRepository.findAll();
+    }
     @Transactional
     public void removeAll() {
         productService.removeAll();
         producerRepository.deleteAll();
-    }
-
-    public List<Producer> findAll() {
-        return producerRepository.findAll();
     }
 }

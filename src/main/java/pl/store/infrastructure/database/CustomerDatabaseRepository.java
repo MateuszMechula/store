@@ -22,13 +22,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class CustomerDatabaseRepository implements CustomerRepository {
 
-    private final static String DELETE_ALL = "DELETE FROM CUSTOMER WHERE 1=1";
-    private static final String DELETE_WHERE_CUSTOMER_EMAIL = "DELETE FROM CUSTOMER WHERE EMAIL = :email";
     private static final String SELECT_ALL_CUSTOMERS = "SELECT * FROM CUSTOMER";
     private final static String SELECT_ONE_WHERE_EMAIL = "SELECT * FROM CUSTOMER WHERE EMAIL = :email";
+    private final static String DELETE_ALL = "DELETE FROM CUSTOMER WHERE 1=1";
+    private static final String DELETE_WHERE_CUSTOMER_EMAIL = "DELETE FROM CUSTOMER WHERE EMAIL = :email";
 
-    private final SimpleDriverDataSource simpleDriverDataSource;
     private final DatabaseMapper databaseMapper;
+    private final SimpleDriverDataSource simpleDriverDataSource;
     @Override
     public Customer create(Customer customer) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(simpleDriverDataSource)
@@ -40,8 +40,9 @@ public class CustomerDatabaseRepository implements CustomerRepository {
     }
 
     @Override
-    public void deleteAll() {
-        new JdbcTemplate(simpleDriverDataSource).update(DELETE_ALL);
+    public List<Customer> findAll() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
+        return jdbcTemplate.query(SELECT_ALL_CUSTOMERS, databaseMapper::mapCustomer);
     }
 
     @Override
@@ -56,13 +57,10 @@ public class CustomerDatabaseRepository implements CustomerRepository {
             return Optional.empty();
         }
     }
-
     @Override
-    public List<Customer> findAll() {
-        JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
-        return jdbcTemplate.query(SELECT_ALL_CUSTOMERS, databaseMapper::mapCustomer);
+    public void deleteAll() {
+        new JdbcTemplate(simpleDriverDataSource).update(DELETE_ALL);
     }
-
     @Override
     public void remove(String email) {
         NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);

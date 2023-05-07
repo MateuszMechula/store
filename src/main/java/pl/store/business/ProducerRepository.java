@@ -6,7 +6,6 @@ import java.util.List;
 
 public interface ProducerRepository {
     Producer create(Producer producer);
-    void deleteAll();
-
     List<Producer> findAll();
+    void deleteAll();
 }

@@ -7,12 +7,8 @@ import java.util.Optional;
 
 public interface CustomerRepository {
     Customer create(Customer customer);
-
-    void deleteAll();
-
     Optional<Customer> find(String email);
-
     List<Customer> findAll();
-
+    void deleteAll();
     void remove(String email);
 }

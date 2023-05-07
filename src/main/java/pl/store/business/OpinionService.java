@@ -15,7 +15,6 @@ import java.util.List;
 public class OpinionService {
 
     private final OpinionRepository opinionRepository;
-
     private final PurchaseService purchaseService;
 
     @Transactional
@@ -34,36 +33,37 @@ public class OpinionService {
     }
 
     @Transactional
-    public void removeAll() {
-        opinionRepository.deleteAll();
-    }
-
-    @Transactional
-    public void removeAll(String email) {
-        opinionRepository.remove(email);
-    }
-
-    @Transactional
     public List<Opinion> findAll() {
         return opinionRepository.findAll();
     }
-
     @Transactional
     public List<Opinion> findAll(String email) {
         return opinionRepository.findAll(email);
     }
-
+    public List<Opinion> findAllByProductCode(String productCode) {
+        return opinionRepository.findAllByProductCode(productCode);
+    }
     @Transactional
     public List<Opinion> findUnwantedOpinions() {
         return opinionRepository.findUnwantedOpinions();
     }
-
+    @Transactional
+    public boolean findCustomersGivesUnwantedOpinions(String email) {
+        return opinionRepository.findConsumersGivesUnwantedOpinions(email);
+    }
+    @Transactional
+    public void removeAll() {
+        opinionRepository.deleteAll();
+    }
+    @Transactional
+    public void removeAll(String email) {
+        opinionRepository.remove(email);
+    }
     @Transactional
     public void removeUnwantedOpinions() {
         opinionRepository.removeUnwantedOpinions();
     }
-
-    public boolean customerGivesUnwantedOpinions(String email) {
-        return opinionRepository.consumerGivesUnwantedOpinions(email);
+    public void removeAllByProductCode(String productCode) {
+        opinionRepository.removeAllByProductCode(productCode);
     }
 }

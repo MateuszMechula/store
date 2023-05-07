@@ -20,12 +20,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProductDatabaseRepository implements ProductRepository {
 
-    private final static String DELETE_ALL = "DELETE FROM PRODUCT WHERE 1=1";
     private static final String SELECT_ALL_PRODUCT = "SELECT * FROM PRODUCT";
     private static final String SELECT_WHERE_PRODUCT_CODE = "SELECT * FROM PRODUCT WHERE PRODUCT_CODE = :product_code";
-    private final SimpleDriverDataSource simpleDriverDataSource;
-
+    private final static String DELETE_ALL = "DELETE FROM PRODUCT WHERE 1=1";
+    private static final String DELETE_WHERE_PRODUCT_CODE = "DELETE FROM PRODUCT WHERE PRODUCT_CODE = :product_code";
     private final DatabaseMapper databaseMapper;
+    private final SimpleDriverDataSource simpleDriverDataSource;
     @Override
     public Product create(Product product) {
         SimpleJdbcInsert simpleJdbcInsert = new SimpleJdbcInsert(simpleDriverDataSource)
@@ -37,11 +37,6 @@ public class ProductDatabaseRepository implements ProductRepository {
         final Number productId = simpleJdbcInsert.executeAndReturnKey(params);
         return product.withId((long) productId.intValue());
     }
-    @Override
-    public void deleteAll() {
-        new JdbcTemplate(simpleDriverDataSource).update(DELETE_ALL);
-    }
-
     @Override
     public Optional<Product> find(String productCode) {
         NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
@@ -60,5 +55,16 @@ public class ProductDatabaseRepository implements ProductRepository {
     public List<Product> findAll() {
         final JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
         return jdbcTemplate.query(SELECT_ALL_PRODUCT, DatabaseMapper::mapProduct);
+    }
+
+    @Override
+    public void remove(String productCode) {
+        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
+        jdbcTemplate.update(DELETE_WHERE_PRODUCT_CODE, Map.of("product_code", productCode));
+    }
+
+    @Override
+    public void deleteAll() {
+        new JdbcTemplate(simpleDriverDataSource).update(DELETE_ALL);
     }
 }

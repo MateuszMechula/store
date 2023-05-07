@@ -14,14 +14,17 @@ import pl.store.infrastructure.configuration.DatabaseConfiguration;
 import java.util.List;
 import java.util.Map;
 
+
 @Slf4j
 @Repository
 @AllArgsConstructor
 public class PurchaseDatabaseRepository implements PurchaseRepository {
 
-    private final static String DELETE_ALL = "DELETE FROM PURCHASE WHERE 1=1";
-    private static final String DELETE_ALL_WHERE_CUSTOMER_EMAIL =
-            "DELETE FROM PURCHASE WHERE CUSTOMER_ID IN (SELECT ID FROM CUSTOMER WHERE EMAIL = :email)";
+    private static final String SELECT_ALL_PURCHASE = "SELECT * FROM PURCHASE";
+    private static final String SELECT_ALL_WHERE_PRODUCT_CODE = """
+            SELECT * FROM PURCHASE
+            WHERE PRODUCT_ID = (SELECT ID FROM PRODUCT WHERE PRODUCT_CODE = :product_code)
+            """;
     private static final String SELECT_ALL_WHERE_CUSTOMER_EMAIL = """
             SELECT * FROM PURCHASE AS PUR
                 INNER JOIN CUSTOMER AS CUS ON CUS.ID = PUR.CUSTOMER_ID
@@ -35,7 +38,14 @@ public class PurchaseDatabaseRepository implements PurchaseRepository {
                 WHERE CUS.EMAIL = :email
                 AND PROD.PRODUCT_CODE = :product_code
             """;
-    private static final String SELECT_ALL_PURCHASE = "SELECT * FROM PURCHASE";
+    private final static String DELETE_ALL = "DELETE FROM PURCHASE WHERE 1=1";
+    private static final String DELETE_ALL_WHERE_PRODUCT_CODE = """
+            DELETE FROM PURCHASE
+            WHERE PRODUCT_ID IN (SELECT ID FROM PRODUCT WHERE PRODUCT_CODE = :product_code)
+            """;
+    private static final String DELETE_ALL_WHERE_CUSTOMER_EMAIL =
+            "DELETE FROM PURCHASE WHERE CUSTOMER_ID IN (SELECT ID FROM CUSTOMER WHERE EMAIL = :email)";
+
 
     private final SimpleDriverDataSource simpleDriverDataSource;
     private final DatabaseMapper databaseMapper;
@@ -51,14 +61,9 @@ public class PurchaseDatabaseRepository implements PurchaseRepository {
         return purchase.withId((long) purchaseId.intValue());
     }
     @Override
-    public void deleteAll() {
-        new JdbcTemplate(simpleDriverDataSource).update(DELETE_ALL);
-    }
-
-    @Override
-    public void remove(String email) {
-        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
-        jdbcTemplate.update(DELETE_ALL_WHERE_CUSTOMER_EMAIL, Map.of("email", email));
+    public List<Purchase> findAll() {
+        final JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
+        return jdbcTemplate.query(SELECT_ALL_PURCHASE, DatabaseMapper::mapPurchase);
     }
 
     @Override
@@ -79,10 +84,27 @@ public class PurchaseDatabaseRepository implements PurchaseRepository {
                 DatabaseMapper::mapPurchase
         );
     }
+    @Override
+    public List<Purchase> findAllByProductCode(String productCode) {
+        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
+        return jdbcTemplate
+                .query(SELECT_ALL_WHERE_PRODUCT_CODE, Map.of("product_code", productCode), DatabaseMapper::mapPurchase);
+    }
 
     @Override
-    public List<Purchase> findAll() {
-        final JdbcTemplate jdbcTemplate = new JdbcTemplate(simpleDriverDataSource);
-        return jdbcTemplate.query(SELECT_ALL_PURCHASE, DatabaseMapper::mapPurchase);
+    public void deleteAll() {
+        new JdbcTemplate(simpleDriverDataSource).update(DELETE_ALL);
+    }
+
+    @Override
+    public void remove(String email) {
+        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
+        jdbcTemplate.update(DELETE_ALL_WHERE_CUSTOMER_EMAIL, Map.of("email", email));
+    }
+
+    @Override
+    public void removeAllByProductCode(String productCode) {
+        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
+        jdbcTemplate.update(DELETE_ALL_WHERE_PRODUCT_CODE, Map.of("product_code", productCode));
     }
 }

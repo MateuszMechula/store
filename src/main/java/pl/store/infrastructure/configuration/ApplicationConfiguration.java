@@ -8,6 +8,4 @@ import org.springframework.context.annotation.Import;
 @Import({DatabaseConfiguration.class})
 @ComponentScan(basePackages = "pl.store")
 public class ApplicationConfiguration {
-
-
 }

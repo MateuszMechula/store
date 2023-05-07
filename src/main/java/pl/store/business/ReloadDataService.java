@@ -28,13 +28,11 @@ public class ReloadDataService {
         for (int i = 0; i < 10; i++) {
             randomDataService.create();
         }
-
     }
     @Transactional
     public void reloadData() {
         customerService.removeAll();
         producerService.removeAll();
-
         try {
             final Path path = ResourceUtils.getFile("classpath:w15-project-sql-inserts.sql").toPath();
             Stream.of(Files.readString(path).split("INSERT"))
@@ -45,6 +43,5 @@ public class ReloadDataService {
         } catch (Exception e) {
             log.error("Unable to load SQL inserts", e);
         }
-
     }
 }
