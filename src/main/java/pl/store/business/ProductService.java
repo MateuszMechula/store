@@ -30,4 +30,10 @@ public class ProductService {
     public List<Product> findAll() {
         return productRepository.findAll();
     }
+
+    @Transactional
+    public Product find(String productCode){
+        return productRepository.find(productCode)
+                .orElseThrow(() -> new RuntimeException("Prodact with productCode: [%s] is missing".formatted(productCode)));
+    }
 }

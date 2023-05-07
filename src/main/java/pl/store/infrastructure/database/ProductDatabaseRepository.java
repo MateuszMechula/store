@@ -3,6 +3,7 @@ package pl.store.infrastructure.database;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.jdbc.datasource.SimpleDriverDataSource;
 import org.springframework.stereotype.Repository;
@@ -12,6 +13,7 @@ import pl.store.infrastructure.configuration.DatabaseConfiguration;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Repository
@@ -20,6 +22,7 @@ public class ProductDatabaseRepository implements ProductRepository {
 
     private final static String DELETE_ALL = "DELETE FROM PRODUCT WHERE 1=1";
     private static final String SELECT_ALL_PRODUCT = "SELECT * FROM PRODUCT";
+    private static final String SELECT_WHERE_PRODUCT_CODE = "SELECT * FROM PRODUCT WHERE PRODUCT_CODE = :product_code";
     private final SimpleDriverDataSource simpleDriverDataSource;
 
     private final DatabaseMapper databaseMapper;
@@ -37,6 +40,20 @@ public class ProductDatabaseRepository implements ProductRepository {
     @Override
     public void deleteAll() {
         new JdbcTemplate(simpleDriverDataSource).update(DELETE_ALL);
+    }
+
+    @Override
+    public Optional<Product> find(String productCode) {
+        NamedParameterJdbcTemplate jdbcTemplate = new NamedParameterJdbcTemplate(simpleDriverDataSource);
+
+        final Map<String, String> params = Map.of("product_code", productCode);
+        try {
+            return Optional.ofNullable(jdbcTemplate.queryForObject(SELECT_WHERE_PRODUCT_CODE,
+                    params, DatabaseMapper::mapProduct));
+        } catch (Exception e) {
+            log.warn("Trying to find non-existing product: [{}]", productCode);
+            return Optional.empty();
+        }
     }
 
     @Override
