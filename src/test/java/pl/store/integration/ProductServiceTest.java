@@ -1,4 +1,4 @@
-package pl.store.business;
+package pl.store.integration;
 
 import lombok.AllArgsConstructor;
 import org.junit.jupiter.api.Assertions;
@@ -7,6 +7,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.junit.jupiter.SpringJUnitConfig;
+import pl.store.business.OpinionService;
+import pl.store.business.ProductService;
+import pl.store.business.PurchaseService;
+import pl.store.business.ReloadDataService;
 import pl.store.domain.Opinion;
 import pl.store.domain.Purchase;
 import pl.store.infrastructure.configuration.ApplicationConfiguration;
